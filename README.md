@@ -10,5 +10,9 @@ This will launch the terminal interface, Dont worry if it has any bugs its still
 We have a few api inference providers mostly popular ones you can acess the basic settings using **ctrl + s**
 More api providers will be added later you can also use developer mode to monitor some special things like tkps, input tokens, output tokens and etc....
 More shortcuts will be added later
+
+# Note
+This project is still under development stage so we apologise for any bugs or issues you find.
+
 # Thanks
 My friend who gave me the idea [Vihas Methnula](https://github.com/VihasMethnula)
