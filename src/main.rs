@@ -24,6 +24,10 @@ use ratatui::backend::CrosstermBackend;
 use ratatui::Terminal;
 use std::io::stdout;
 use std::time::Duration;
+use tokio::sync::oneshot;
+
+/// Shared application state for the web server
+type SharedConfig = std::sync::Arc<std::sync::Mutex<Config>>;
 
 /// OpenTUI - A stunning terminal AI chat interface for multiple providers
 #[derive(Parser, Debug)]
@@ -105,6 +109,80 @@ async fn run_interactive(config: Config) -> Result<()> {
     let mut app = App::new(config)?;
     let tick_rate = Duration::from_millis(50);
 
+    // Channel to stop the web server when TUI exits
+    let (web_shutdown_tx, web_shutdown_rx) = oneshot::channel::<()>();
+    
+    use warp::Filter;
+    
+    // Start web server in background
+    let web_config = app.config.clone();
+    let web_handle = tokio::spawn(async move {
+        let config_for_web = web_config;
+        let mut shutdown_rx = web_shutdown_rx;
+        
+        // Create the warp server
+        let shared_config: SharedConfig = std::sync::Arc::new(std::sync::Mutex::new(config_for_web.clone()));
+        let config_for_routes = shared_config.clone();
+
+        // GET /api/config - Get current configuration
+        let get_config = warp::get()
+            .and(warp::path("api"))
+            .and(warp::path("config"))
+            .and(warp::path::end())
+            .map(move || {
+                let config = config_for_routes.lock().unwrap();
+                warp::reply::json(&*config)
+            });
+
+        // POST /api/config - Update configuration
+        let update_config = warp::post()
+            .and(warp::path("api"))
+            .and(warp::path("config"))
+            .and(warp::path::end())
+            .and(warp::body::json())
+            .and(warp::any().map(move || shared_config.clone()))
+            .map(|new_config: Config, config: SharedConfig| {
+                // Save the new config
+                if let Err(e) = new_config.save() {
+                    return warp::reply::with_status(
+                        warp::reply::json(&serde_json::json!({"error": e.to_string()})),
+                        warp::http::StatusCode::INTERNAL_SERVER_ERROR,
+                    );
+                }
+                
+                // Update the shared config
+                {
+                    let mut config_guard = config.lock().unwrap();
+                    *config_guard = new_config;
+                }
+                
+                warp::reply::with_status(
+                    warp::reply::json(&serde_json::json!({"success": true})),
+                    warp::http::StatusCode::OK,
+                )
+            });
+
+        // GET / - Serve the settings HTML page
+        let serve_index = warp::get()
+            .and(warp::path::end())
+            .map(|| {
+                warp::reply::html(include_str!("web/index.html"))
+            });
+
+        // Combine all routes
+        let routes = serve_index.or(get_config).or(update_config);
+
+        println!("🌐 Settings web interface running at http://localhost:3068");
+        
+        // Run the server until shutdown signal
+        let (_, server) = warp::serve(routes)
+            .bind_with_graceful_shutdown(([127, 0, 0, 1], 3068), async move {
+                shutdown_rx.await.ok();
+            });
+        
+        server.await;
+    });
+
     // Run event loop
     let result = run_event_loop(&mut terminal, &mut app, tick_rate).await;
 
@@ -126,6 +204,10 @@ async fn run_interactive(config: Config) -> Result<()> {
     if let Err(e) = &result {
         eprintln!("Error: {}", e);
     }
+
+    // Stop the web server
+    let _ = web_shutdown_tx.send(());
+    let _ = web_handle.await;
 
     result?;
     restore_result.map_err(|e| anyhow::anyhow!("Failed to restore terminal: {}", e))
@@ -317,7 +399,9 @@ async fn handle_event(app: &mut App, event: Event) -> Result<()> {
                         if key.modifiers == KeyModifiers::CONTROL {
                             match c {
                                 's' | 'S' => {
-                                    app.screen = Screen::Settings;
+                                    // Open web settings in browser
+                                    let msg = open_web_settings();
+                                    app.chat.error_message = Some(msg);
                                 }
                                 'c' | 'C' | 'q' | 'Q' => {
                                     app.screen = Screen::Quit;
@@ -535,7 +619,8 @@ async fn handle_event(app: &mut App, event: Event) -> Result<()> {
                         }
                         KeyCode::Char('s') | KeyCode::Char('S') => {
                             if key.modifiers.contains(KeyModifiers::CONTROL) {
-                                app.config.save()?;
+                                // Open web settings in browser
+                                open_web_settings();
                             }
                         }
                         _ => {}
@@ -547,6 +632,39 @@ async fn handle_event(app: &mut App, event: Event) -> Result<()> {
     }
 
     Ok(())
+}
+
+/// Open web settings in browser. Returns a message to display in the TUI.
+/// Only shows URL as fallback when browser can't be opened.
+fn open_web_settings() -> String {
+    let url = "http://localhost:3068";
+    
+    // Try to open in browser
+    #[cfg(target_os = "macos")]
+    let result = std::process::Command::new("open").arg(url).spawn();
+    
+    #[cfg(target_os = "linux")]
+    let result = std::process::Command::new("xdg-open").arg(url).spawn();
+    
+    #[cfg(target_os = "windows")]
+    let result = std::process::Command::new("cmd")
+        .args(["/C", "start", url])
+        .spawn();
+    
+    #[cfg(not(any(target_os = "macos", target_os = "linux", target_os = "windows")))]
+    let result: Result<std::process::Child, std::io::Error> = Err(std::io::Error::new(
+        std::io::ErrorKind::Unsupported,
+        "Browser opening not supported on this platform",
+    ));
+    
+    match result {
+        Ok(_) => {
+            "🌐 Opening settings in browser...".to_string()
+        }
+        Err(_) => {
+            format!("🌐 Could not open browser. Please visit: {}", url)
+        }
+    }
 }
 
 /// Send a one-shot message and print the response

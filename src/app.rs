@@ -204,8 +204,15 @@ impl App {
     }
 
     /// Process incoming stream chunks (call this in the event loop)
+    /// Consumes ALL available chunks in a loop so no data is left sitting in the channel buffer.
     pub async fn process_stream(&mut self) -> Result<()> {
-        if let Some(rx) = &mut self.stream_rx {
+        // Take ownership of the receiver so we can freely drain it
+        let mut rx = match self.stream_rx.take() {
+            Some(rx) => rx,
+            None => return Ok(()),
+        };
+
+        loop {
             match rx.try_recv() {
                 Ok(Ok(chunk)) => {
                     self.stream_buffer.push_str(&chunk.content);
@@ -216,8 +223,8 @@ impl App {
                     }
 
                     // Check if stream is done
-                    if let Some(_finish_reason) = chunk.finish_reason {
-                        // Done streaming
+                    if chunk.finish_reason.is_some() {
+                        // Done streaming — commit the full accumulated content
                         if !self.stream_buffer.is_empty() {
                             let assistant_msg =
                                 Message::assistant(&self.stream_buffer);
@@ -226,20 +233,26 @@ impl App {
                         self.stream_buffer.clear();
                         self.chat.streaming_content.clear();
                         self.is_streaming = false;
-                        self.stream_rx = None;
+                        // Drain any leftover chunks that might have been sent after finish_reason
+                        while rx.try_recv().is_ok() {}
+                        // stream_rx stays None (channel is dead)
+                        return Ok(());
                     }
                 }
                 Ok(Err(e)) => {
                     self.chat.error_message = Some(format!("Stream error: {}", e));
                     self.is_streaming = false;
-                    self.stream_rx = None;
-                    return Err(e);
+                    // Don't return Err — the event loop should keep running so the
+                    // user can see the error message and try again.
+                    return Ok(());
                 }
                 Err(mpsc::error::TryRecvError::Empty) => {
-                    // No data yet, that's fine
+                    // No more data right now — put the receiver back for the next tick
+                    self.stream_rx = Some(rx);
+                    return Ok(());
                 }
                 Err(mpsc::error::TryRecvError::Disconnected) => {
-                    // Stream ended without finish_reason - still add the content
+                    // Stream ended without a finish_reason — commit whatever we've got
                     if !self.stream_buffer.is_empty() {
                         let assistant_msg =
                             Message::assistant(&self.stream_buffer);
@@ -248,11 +261,11 @@ impl App {
                     self.stream_buffer.clear();
                     self.chat.streaming_content.clear();
                     self.is_streaming = false;
-                    self.stream_rx = None;
+                    // stream_rx stays None (channel is dead)
+                    return Ok(());
                 }
             }
         }
-        Ok(())
     }
 
     /// Cancel the current stream

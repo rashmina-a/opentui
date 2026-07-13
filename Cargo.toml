@@ -44,6 +44,9 @@ chrono = "0.4"
 # Streaming SSE parsing
 eventsource-stream = "0.2"
 
+# Web server for settings UI
+warp = "0.3"
+
 # Base64 encoding for images
 base64 = "0.22"
 
