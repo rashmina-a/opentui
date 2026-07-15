@@ -29,6 +29,7 @@ pub mod colors {
 
 /// Screen variants for the application
 #[derive(Debug, Clone, PartialEq)]
+#[allow(dead_code)]
 pub enum Screen {
     Chat,
     Settings,
@@ -57,7 +58,7 @@ pub fn sanitize_text(text: &str) -> String {
                 return true;
             }
             // Allow common Unicode categories
-            let cat = std::char::UNICODE_VERSION;
+            let _cat = std::char::UNICODE_VERSION;
             c > '\u{00A0}' && !c.is_control()
         })
         .collect::<String>()

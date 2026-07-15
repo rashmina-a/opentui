@@ -118,7 +118,7 @@ async fn run_interactive(config: Config) -> Result<()> {
     let web_config = app.config.clone();
     let web_handle = tokio::spawn(async move {
         let config_for_web = web_config;
-        let mut shutdown_rx = web_shutdown_rx;
+        let shutdown_rx = web_shutdown_rx;
         
         // Create the warp server
         let shared_config: SharedConfig = std::sync::Arc::new(std::sync::Mutex::new(config_for_web.clone()));
@@ -162,6 +162,125 @@ async fn run_interactive(config: Config) -> Result<()> {
                 )
             });
 
+        // GET /api/models?base_url=<url> - Fetch models from provider API
+        let get_models = warp::get()
+            .and(warp::path("api"))
+            .and(warp::path("models"))
+            .and(warp::path::end())
+            .and(warp::query::<std::collections::HashMap<String, String>>())
+            .and_then(|params: std::collections::HashMap<String, String>| async move {
+                let empty_models: Vec<String> = Vec::new();
+                let base_url = params.get("base_url").cloned().unwrap_or_default();
+                
+                if base_url.is_empty() {
+                    return Ok::<_, warp::Rejection>(warp::reply::json(&serde_json::json!({
+                        "error": "No base_url provided",
+                        "models": empty_models
+                    })));
+                }
+
+                let models_url = format!("{}/models", base_url.trim_end_matches('/'));
+                let client = reqwest::Client::builder()
+                    .timeout(std::time::Duration::from_secs(10))
+                    .build();
+
+                match client {
+                    Ok(client) => {
+                        match client.get(&models_url).send().await {
+                            Ok(resp) => {
+                                if resp.status().is_success() {
+                                    if let Ok(body) = resp.json::<serde_json::Value>().await {
+                                        if let Some(data) = body["data"].as_array() {
+                                            let models: Vec<String> = data
+                                                .iter()
+                                                .filter_map(|m| m["id"].as_str().map(|s| s.to_string()))
+                                                .collect();
+                                            return Ok(warp::reply::json(&serde_json::json!({
+                                                "models": models
+                                            })));
+                                        } else if let Some(data) = body.as_array() {
+                                            // Some APIs return an array directly
+                                            let models: Vec<String> = data
+                                                .iter()
+                                                .filter_map(|m| {
+                                                    m["id"].as_str().map(|s| s.to_string())
+                                                        .or_else(|| m.as_str().map(|s| s.to_string()))
+                                                })
+                                                .collect();
+                                            if !models.is_empty() {
+                                                return Ok(warp::reply::json(&serde_json::json!({
+                                                    "models": models
+                                                })));
+                                            }
+                                        }
+                                        let error_models: Vec<String> = Vec::new();
+                                        return Ok(warp::reply::json(&serde_json::json!({
+                                            "error": "Unexpected API response format",
+                                            "models": error_models
+                                        })));
+                                    }
+                                    let parse_models: Vec<String> = Vec::new();
+                                    return Ok(warp::reply::json(&serde_json::json!({
+                                        "error": "Failed to parse API response",
+                                        "models": parse_models
+                                    })));
+                                } else {
+                                    let status = resp.status();
+                                    let body = resp.text().await.unwrap_or_default();
+                                    let http_models: Vec<String> = Vec::new();
+                                    return Ok(warp::reply::json(&serde_json::json!({
+                                        "error": format!("HTTP {}: {}", status, body.chars().take(100).collect::<String>()),
+                                        "models": http_models
+                                    })));
+                                }
+                            }
+                            Err(e) => {
+                                let conn_models: Vec<String> = Vec::new();
+                                return Ok(warp::reply::json(&serde_json::json!({
+                                    "error": format!("Connection failed: {}", e),
+                                    "models": conn_models
+                                })));
+                            }
+                        }
+                    }
+                    Err(e) => {
+                        let client_models: Vec<String> = Vec::new();
+                        return Ok(warp::reply::json(&serde_json::json!({
+                            "error": format!("Failed to create HTTP client: {}", e),
+                            "models": client_models
+                        })));
+                    }
+                }
+            });
+
+        // GET /api/themes - List available themes
+        let get_themes = warp::get()
+            .and(warp::path("api"))
+            .and(warp::path("themes"))
+            .and(warp::path::end())
+            .map(|| {
+                let themes: Vec<serde_json::Value> = crate::config::get_themes()
+                    .iter()
+                    .map(|(id, name)| {
+                        serde_json::json!({
+                            "id": id,
+                            "name": name
+                        })
+                    })
+                    .collect();
+                warp::reply::json(&themes)
+            });
+
+        // GET /api/providers - List available providers with their default models
+        let get_providers = warp::get()
+            .and(warp::path("api"))
+            .and(warp::path("providers"))
+            .and(warp::path::end())
+            .map(|| {
+                let providers = crate::config::get_provider_info();
+                warp::reply::json(&providers)
+            });
+
         // GET / - Serve the settings HTML page
         let serve_index = warp::get()
             .and(warp::path::end())
@@ -170,11 +289,16 @@ async fn run_interactive(config: Config) -> Result<()> {
             });
 
         // Combine all routes
-        let routes = serve_index.or(get_config).or(update_config);
+        let routes = serve_index
+            .or(get_config)
+            .or(update_config)
+            .or(get_models)
+            .or(get_themes)
+            .or(get_providers);
 
-        println!("🌐 Settings web interface running at http://localhost:3068");
-        
         // Run the server until shutdown signal
+        // Note: We don't print anything here to avoid interfering with the TUI output
+        
         let (_, server) = warp::serve(routes)
             .bind_with_graceful_shutdown(([127, 0, 0, 1], 3068), async move {
                 shutdown_rx.await.ok();
@@ -399,9 +523,8 @@ async fn handle_event(app: &mut App, event: Event) -> Result<()> {
                         if key.modifiers == KeyModifiers::CONTROL {
                             match c {
                                 's' | 'S' => {
-                                    // Open web settings in browser
-                                    let msg = open_web_settings();
-                                    app.chat.error_message = Some(msg);
+                                    // Open web settings in browser silently (no TUI output)
+                                    open_web_settings();
                                 }
                                 'c' | 'C' | 'q' | 'Q' => {
                                     app.screen = Screen::Quit;
@@ -619,7 +742,7 @@ async fn handle_event(app: &mut App, event: Event) -> Result<()> {
                         }
                         KeyCode::Char('s') | KeyCode::Char('S') => {
                             if key.modifiers.contains(KeyModifiers::CONTROL) {
-                                // Open web settings in browser
+                                // Open web settings in browser silently (no TUI output)
                                 open_web_settings();
                             }
                         }
@@ -634,37 +757,23 @@ async fn handle_event(app: &mut App, event: Event) -> Result<()> {
     Ok(())
 }
 
-/// Open web settings in browser. Returns a message to display in the TUI.
-/// Only shows URL as fallback when browser can't be opened.
-fn open_web_settings() -> String {
+
+/// Open web settings in browser.
+/// Silently tries to open the browser; no message is displayed in the TUI.
+fn open_web_settings() {
     let url = "http://localhost:3068";
     
-    // Try to open in browser
+    // Try to open in browser silently
     #[cfg(target_os = "macos")]
-    let result = std::process::Command::new("open").arg(url).spawn();
+    let _ = std::process::Command::new("open").arg(url).spawn();
     
     #[cfg(target_os = "linux")]
-    let result = std::process::Command::new("xdg-open").arg(url).spawn();
+    let _ = std::process::Command::new("xdg-open").arg(url).spawn();
     
     #[cfg(target_os = "windows")]
-    let result = std::process::Command::new("cmd")
+    let _ = std::process::Command::new("cmd")
         .args(["/C", "start", url])
         .spawn();
-    
-    #[cfg(not(any(target_os = "macos", target_os = "linux", target_os = "windows")))]
-    let result: Result<std::process::Child, std::io::Error> = Err(std::io::Error::new(
-        std::io::ErrorKind::Unsupported,
-        "Browser opening not supported on this platform",
-    ));
-    
-    match result {
-        Ok(_) => {
-            "🌐 Opening settings in browser...".to_string()
-        }
-        Err(_) => {
-            format!("🌐 Could not open browser. Please visit: {}", url)
-        }
-    }
 }
 
 /// Send a one-shot message and print the response

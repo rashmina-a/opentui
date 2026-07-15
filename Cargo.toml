@@ -2,10 +2,13 @@
 name = "opentui"
 version = "0.1.0"
 edition = "2021"
-description = "A stunning TUI alternative for Open Web UI - Chat with multiple AI providers"
+description = "A stunning terminal AI chat interface for multiple AI providers - lightweight alternative to Open Web UI"
 authors = ["opentui team"]
 license = "MIT"
-repository = "https://github.com/opentui/opentui"
+repository = "https://github.com/rashmina-a/opentui"
+homepage = "https://github.com/rashmina-a/opentui"
+keywords = ["tui", "ai", "chat", "terminal", "cli"]
+categories = ["command-line-utilities", "development-tools"]
 
 [dependencies]
 # TUI framework
@@ -53,3 +56,8 @@ base64 = "0.22"
 [[bin]]
 name = "opentui"
 path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1

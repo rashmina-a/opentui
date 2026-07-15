@@ -189,6 +189,54 @@ pub struct KeysConfig {
     pub mistral: Option<String>,
 }
 
+/// Available themes
+pub const THEMES: &[&str] = &[
+    "catppuccin",
+    "terminal",
+    "nord",
+    "dracula",
+    "tokyo-night",
+    "gruvbox",
+];
+
+/// Theme display names
+pub const THEME_NAMES: &[&str] = &[
+    "Catppuccin Mocha",
+    "Classic Terminal",
+    "Nord",
+    "Dracula",
+    "Tokyo Night",
+    "Gruvbox",
+];
+
+/// Get all themes with their display names
+pub fn get_themes() -> Vec<(&'static str, &'static str)> {
+    THEMES.iter().zip(THEME_NAMES.iter()).map(|(k, v)| (*k, *v)).collect()
+}
+
+/// Provider info for the web API
+#[derive(Debug, Clone, Serialize)]
+pub struct ProviderInfo {
+    pub id: String,
+    pub name: String,
+    pub models: Vec<String>,
+}
+
+/// Get all providers with their info for the web API
+pub fn get_provider_info() -> Vec<ProviderInfo> {
+    ProviderType::all()
+        .iter()
+        .map(|p| ProviderInfo {
+            id: serde_json::to_value(p)
+                .ok()
+                .and_then(|v| v.as_str().map(|s| s.to_string()))
+                .unwrap_or_else(|| p.display_name().to_lowercase()),
+            name: p.display_name().to_string(),
+            models: p.models().iter().map(|m| m.to_string()).collect(),
+        })
+        .collect()
+}
+
 /// Main configuration structure
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Config {
@@ -321,7 +369,6 @@ impl Config {
     }
 
     /// Get mutable provider config by type
-    #[allow(dead_code)]
     pub fn get_provider_config_mut(&mut self, provider: &ProviderType) -> &mut ProviderConfig {
         match provider {
             ProviderType::OpenAI => &mut self.openai,

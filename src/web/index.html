@@ -11,7 +11,8 @@
             box-sizing: border-box;
         }
 
-        :root {
+        /* ── Catppuccin Mocha (default) ── */
+        :root, body.theme-catppuccin {
             --bg-base: #1e1e2e;
             --bg-mantle: #181825;
             --bg-crust: #11111b;
@@ -29,18 +30,249 @@
             --teal: #94e2d5;
             --sky: #89dceb;
             --yellow: #f9e2af;
+            --blue: #89b4fa;
+            --sapphire: #74c7ec;
+            --flamingo: #f2cdcd;
+            --rosewater: #f5e0dc;
         }
 
+        /* ── Classic Terminal ── */
+        body.theme-terminal {
+            --bg-base: #0a0a0a;
+            --bg-mantle: #0d0d0d;
+            --bg-crust: #000000;
+            --bg-surface0: #141414;
+            --bg-surface1: #1a1a1a;
+            --bg-surface2: #252525;
+            --text: #33ff33;
+            --text-subtext0: #00cc00;
+            --text-subtext1: #00e600;
+            --text-overlay0: #007700;
+            --mauve: #33ff33;
+            --green: #33ff33;
+            --red: #ff3333;
+            --peach: #ffaa00;
+            --teal: #00ffaa;
+            --sky: #66ff66;
+            --yellow: #ffff33;
+            --blue: #33aaff;
+            --sapphire: #44ccff;
+            --flamingo: #ff8888;
+            --rosewater: #ffaaaa;
+        }
+
+        /* ── Nord ── */
+        body.theme-nord {
+            --bg-base: #2e3440;
+            --bg-mantle: #3b4252;
+            --bg-crust: #242933;
+            --bg-surface0: #434c5e;
+            --bg-surface1: #4c566a;
+            --bg-surface2: #5e6a82;
+            --text: #eceff4;
+            --text-subtext0: #d8dee9;
+            --text-subtext1: #e5e9f0;
+            --text-overlay0: #81a1c1;
+            --mauve: #b48ead;
+            --green: #a3be8c;
+            --red: #bf616a;
+            --peach: #d08770;
+            --teal: #8fbcbb;
+            --sky: #88c0d0;
+            --yellow: #ebcb8b;
+            --blue: #81a1c1;
+            --sapphire: #88c0d0;
+            --flamingo: #d8dee9;
+            --rosewater: #eceff4;
+        }
+
+        /* ── Dracula ── */
+        body.theme-dracula {
+            --bg-base: #282a36;
+            --bg-mantle: #21222c;
+            --bg-crust: #191a21;
+            --bg-surface0: #2f3242;
+            --bg-surface1: #3c3f51;
+            --bg-surface2: #4a4d5e;
+            --text: #f8f8f2;
+            --text-subtext0: #bd93f9;
+            --text-subtext1: #e0e0e0;
+            --text-overlay0: #6272a4;
+            --mauve: #bd93f9;
+            --green: #50fa7b;
+            --red: #ff5555;
+            --peach: #ffb86c;
+            --teal: #8be9fd;
+            --sky: #66d9ef;
+            --yellow: #f1fa8c;
+            --blue: #6272a4;
+            --sapphire: #89ebff;
+            --flamingo: #ff79c6;
+            --rosewater: #f8f8f2;
+        }
+
+        /* ── Tokyo Night ── */
+        body.theme-tokyo-night {
+            --bg-base: #1a1b26;
+            --bg-mantle: #16161e;
+            --bg-crust: #0f0f17;
+            --bg-surface0: #24263b;
+            --bg-surface1: #2f3148;
+            --bg-surface2: #3b3d52;
+            --text: #a9b1d6;
+            --text-subtext0: #787c99;
+            --text-subtext1: #9295b0;
+            --text-overlay0: #565f89;
+            --mauve: #bb9af7;
+            --green: #9ece6a;
+            --red: #f7768e;
+            --peach: #ff9e64;
+            --teal: #73daca;
+            --sky: #89ddff;
+            --yellow: #e0af68;
+            --blue: #7aa2f7;
+            --sapphire: #2ac3de;
+            --flamingo: #f7768e;
+            --rosewater: #f4b8b8;
+        }
+
+        /* ── Gruvbox ── */
+        body.theme-gruvbox {
+            --bg-base: #282828;
+            --bg-mantle: #1d2021;
+            --bg-crust: #121415;
+            --bg-surface0: #32302f;
+            --bg-surface1: #3c3836;
+            --bg-surface2: #504945;
+            --text: #ebdbb2;
+            --text-subtext0: #a89984;
+            --text-subtext1: #bdae93;
+            --text-overlay0: #7c6f64;
+            --mauve: #b16286;
+            --green: #98971a;
+            --red: #cc241d;
+            --peach: #d65d0e;
+            --teal: #689d6a;
+            --sky: #83a598;
+            --yellow: #d79921;
+            --blue: #458588;
+            --sapphire: #83a598;
+            --flamingo: #fb4934;
+            --rosewater: #fbf1c7;
+        }
+
+        /* ── Terminal theme enhanced styles ── */
+        body.theme-terminal .form-input:focus {
+            box-shadow: 0 0 0 2px var(--green);
+            border-color: var(--green);
+        }
+
+        body.theme-terminal .btn-primary {
+            background: var(--green);
+            color: var(--bg-crust);
+            font-family: inherit;
+            text-shadow: 0 0 4px rgba(51, 255, 51, 0.5);
+        }
+
+        body.theme-terminal .toggle input:checked + .toggle-slider {
+            background: var(--green);
+        }
+
+        body.theme-terminal header {
+            border: 2px solid var(--green);
+            box-shadow: 0 0 10px rgba(51, 255, 51, 0.15), inset 0 0 10px rgba(51, 255, 51, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.theme-terminal header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.08) 2px,
+                rgba(0, 0, 0, 0.08) 4px
+            );
+            pointer-events: none;
+        }
+
+        body.theme-terminal .card {
+            border: 1px solid var(--green);
+            border-left: 3px solid var(--green);
+            box-shadow: 0 0 8px rgba(51, 255, 51, 0.08);
+        }
+
+        body.theme-terminal .provider-item {
+            border: 1px solid var(--bg-surface2);
+            border-left: 3px solid var(--green);
+        }
+
+        body.theme-terminal .provider-item.selected {
+            border-color: var(--green);
+            box-shadow: 0 0 12px rgba(51, 255, 51, 0.15);
+        }
+
+        body.theme-terminal .tabs {
+            border: 1px solid var(--green);
+        }
+
+        body.theme-terminal .tab.active {
+            background: var(--green);
+            color: var(--bg-crust);
+            text-shadow: none;
+            box-shadow: 0 0 8px rgba(51, 255, 51, 0.3);
+        }
+
+        body.theme-terminal .toast {
+            border: 1px solid var(--green);
+            box-shadow: 0 0 15px rgba(51, 255, 51, 0.2);
+        }
+
+        body.theme-terminal .model-item.selected {
+            border-color: var(--green);
+            box-shadow: 0 0 8px rgba(51, 255, 51, 0.15);
+            text-shadow: 0 0 4px rgba(51, 255, 51, 0.4);
+        }
+
+        body.theme-terminal .status-dot.online {
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0%, 100% { box-shadow: 0 0 4px var(--green); }
+            50% { box-shadow: 0 0 10px var(--green), 0 0 20px rgba(51, 255, 51, 0.3); }
+        }
+
+        body.theme-terminal .toggle-slider {
+            border: 1px solid var(--green);
+        }
+
+        body.theme-terminal .toggle-slider:before {
+            box-shadow: 0 0 4px rgba(51, 255, 51, 0.5);
+        }
+
+        /* ── Base Styles ── */
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: var(--bg-base);
             color: var(--text);
             min-height: 100vh;
             padding: 2rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.theme-terminal {
+            font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 960px;
             margin: 0 auto;
         }
 
@@ -51,17 +283,46 @@
             background: var(--bg-mantle);
             border-radius: 16px;
             border: 2px solid var(--mauve);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         header h1 {
             font-size: 1.8rem;
             color: var(--mauve);
             margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
         }
 
         header p {
             color: var(--text-subtext0);
             font-size: 0.9rem;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.8rem;
+            font-size: 0.85rem;
+            color: var(--text-overlay0);
+        }
+
+        .status-bar span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-dot.online {
+            background: var(--green);
+            box-shadow: 0 0 4px var(--green);
         }
 
         .tabs {
@@ -117,6 +378,7 @@
             padding: 1.5rem;
             margin-bottom: 1rem;
             border: 1px solid var(--bg-surface1);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .card-title {
@@ -130,7 +392,7 @@
 
         .provider-grid {
             display: grid;
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
         .provider-item {
@@ -143,7 +405,8 @@
         }
 
         .provider-item:hover {
-            border-color: var(--surface2);
+            border-color: var(--bg-surface2);
+            transform: translateY(-1px);
         }
 
         .provider-item.selected {
@@ -155,7 +418,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.5rem;
         }
 
         .provider-name {
@@ -167,15 +430,16 @@
             font-size: 0.8rem;
             padding: 0.2rem 0.6rem;
             border-radius: 20px;
+            font-weight: 500;
         }
 
         .provider-status.configured {
-            background: rgba(166, 227, 161, 0.2);
+            background: rgba(166, 227, 161, 0.15);
             color: var(--green);
         }
 
         .provider-status.not-configured {
-            background: rgba(250, 179, 135, 0.2);
+            background: rgba(250, 179, 135, 0.15);
             color: var(--peach);
         }
 
@@ -209,6 +473,7 @@
         .form-input:focus {
             outline: none;
             border-color: var(--mauve);
+            box-shadow: 0 0 0 3px rgba(203, 166, 247, 0.15);
         }
 
         .form-input::placeholder {
@@ -216,6 +481,10 @@
         }
 
         .form-input[type="password"] {
+            font-family: monospace;
+        }
+
+        .form-input[type="number"] {
             font-family: monospace;
         }
 
@@ -242,6 +511,10 @@
             gap: 0.5rem;
         }
 
+        .btn:active {
+            transform: scale(0.97);
+        }
+
         .btn-primary {
             background: var(--mauve);
             color: var(--bg-crust);
@@ -250,6 +523,7 @@
         .btn-primary:hover {
             opacity: 0.9;
             transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(203, 166, 247, 0.3);
         }
 
         .btn-secondary {
@@ -259,6 +533,7 @@
 
         .btn-secondary:hover {
             background: var(--bg-surface1);
+            transform: translateY(-1px);
         }
 
         .btn-danger {
@@ -268,6 +543,12 @@
 
         .btn-danger:hover {
             opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
         }
 
         .btn-group {
@@ -300,6 +581,7 @@
             width: 52px;
             height: 28px;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         .toggle input {
@@ -353,6 +635,7 @@
             border-radius: 6px;
             display: inline-block;
             margin-top: 0.5rem;
+            word-break: break-all;
         }
 
         .toast {
@@ -368,6 +651,7 @@
             transform: translateY(20px);
             transition: all 0.3s ease;
             z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .toast.show {
@@ -379,6 +663,10 @@
             background: var(--red);
         }
 
+        .toast.info {
+            background: var(--blue);
+        }
+
         .model-section {
             margin-top: 1rem;
             padding-top: 1rem;
@@ -387,10 +675,10 @@
 
         .model-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 0.5rem;
             margin-top: 0.5rem;
-            max-height: 200px;
+            max-height: 250px;
             overflow-y: auto;
             padding-right: 0.5rem;
         }
@@ -403,10 +691,12 @@
             cursor: pointer;
             border: 2px solid transparent;
             transition: all 0.2s ease;
+            word-break: break-all;
         }
 
         .model-item:hover {
-            border-color: var(--surface2);
+            border-color: var(--bg-surface2);
+            background: var(--bg-surface1);
         }
 
         .model-item.selected {
@@ -415,9 +705,91 @@
             color: var(--green);
         }
 
+        .model-item.fetch-error {
+            color: var(--red);
+            border-color: var(--red);
+            cursor: default;
+        }
+
+        .model-fetch-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .model-fetch-status.loading {
+            color: var(--yellow);
+        }
+
+        .model-fetch-status.error {
+            color: var(--red);
+        }
+
+        .model-fetch-status.success {
+            color: var(--green);
+        }
+
+        .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--bg-surface2);
+            border-top-color: var(--mauve);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Preview theme card */
+        .theme-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .theme-option {
+            padding: 0.8rem;
+            background: var(--bg-surface0);
+            border-radius: 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .theme-option:hover {
+            border-color: var(--bg-surface2);
+            transform: translateY(-2px);
+        }
+
+        .theme-option.active {
+            border-color: var(--mauve);
+            background: var(--bg-surface1);
+        }
+
+        .theme-swatch {
+            width: 100%;
+            height: 40px;
+            border-radius: 6px;
+            margin-bottom: 0.4rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
         /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 8px;
+            height: 8px;
         }
 
         ::-webkit-scrollbar-track {
@@ -450,14 +822,26 @@
             .model-grid {
                 grid-template-columns: 1fr;
             }
+
+            .theme-preview {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
-<body>
+<body class="theme-catppuccin">
     <div class="container">
         <header>
             <h1>⚙️ OpenTUI Settings</h1>
             <p>Configure your AI chat interface preferences</p>
+            <div class="status-bar">
+                <span>
+                    <span class="status-dot online"></span>
+                    <span id="connectionStatus">Connected</span>
+                </span>
+                <span>🔌 <span id="providerCount">0</span> providers</span>
+                <span>🎨 <span id="currentThemeDisplay">Catppuccin Mocha</span></span>
+            </div>
         </header>
 
         <div class="tabs">
@@ -485,7 +869,11 @@
 
                 <div class="form-group">
                     <label class="form-label">🌐 Base URL (optional)</label>
-                    <input type="text" class="form-input" id="baseUrl" placeholder="Default provider API endpoint">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="url" class="form-input" id="baseUrl" placeholder="Default provider API endpoint" style="flex: 1;">
+                        <button class="btn btn-secondary btn-sm" id="fetchModelsBtn" title="Fetch models from this base URL">🔄</button>
+                    </div>
+                    <div class="model-fetch-status" id="modelFetchStatus"></div>
                 </div>
 
                 <div class="form-group">
@@ -500,6 +888,7 @@
 
                 <div class="model-section">
                     <label class="form-label">🤖 Model</label>
+                    <div id="modelFetchIndicator"></div>
                     <div class="model-grid" id="modelList">
                         <!-- Populated by JS -->
                     </div>
@@ -527,8 +916,13 @@
                 <div class="form-group">
                     <label class="form-label">🎨 Theme</label>
                     <select class="form-input" id="theme">
-                        <option value="catppuccin">Catppuccin</option>
+                        <!-- Populated dynamically from API -->
                     </select>
+                </div>
+
+                <!-- Theme Preview Cards -->
+                <div class="theme-preview" id="themePreview">
+                    <!-- Populated dynamically -->
                 </div>
             </div>
 
@@ -546,7 +940,7 @@
                 <div class="toggle-container">
                     <div>
                         <div class="toggle-label">Enable Developer Mode</div>
-                        <div class="toggle-desc">Shows detailed metrics like tokens per second, costs, etc.</div>
+                        <div class="toggle-desc">Shows detailed metrics like tokens per second, response times, and estimated costs</div>
                     </div>
                     <label class="toggle">
                         <input type="checkbox" id="devMode">
@@ -556,16 +950,25 @@
             </div>
 
             <div class="card">
-                <div class="card-title">📊 Metrics Display</div>
-                <div class="toggle-container">
+                <div class="card-title">📊 API Diagnostics</div>
+                <div class="toggle-container" style="margin-bottom: 0.8rem;">
                     <div>
-                        <div class="toggle-label">Token Statistics</div>
-                        <div class="toggle-desc">Input/output tokens, total usage</div>
+                        <div class="toggle-label">Show Performance Metrics</div>
+                        <div class="toggle-desc">Input/output tokens, total usage, tok/s</div>
                     </div>
                     <label class="toggle">
                         <input type="checkbox" id="showMetrics" checked>
                         <span class="toggle-slider"></span>
                     </label>
+                </div>
+                <div style="padding: 0.8rem; background: var(--bg-crust); border-radius: 8px; font-family: monospace; font-size: 0.85rem;">
+                    <div style="color: var(--text-overlay0); margin-bottom: 0.5rem;">⎿ ⎺ API Cost Estimator</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                        <span>GPT-4o input: <span style="color: var(--peach);">$2.50/M</span></span>
+                        <span>GPT-4o output: <span style="color: var(--peach);">$10.00/M</span></span>
+                        <span>Claude 3.5 input: <span style="color: var(--peach);">$3.00/M</span></span>
+                        <span>Claude 3.5 output: <span style="color: var(--peach);">$15.00/M</span></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -579,59 +982,201 @@
     <div class="toast" id="toast">Settings saved successfully!</div>
 
     <script>
-        const PROVIDERS = [
-            { id: 'openai', name: 'OpenAI', models: ['gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo', 'o1', 'o3-mini'] },
-            { id: 'groq', name: 'Groq', models: ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'mixtral-8x7b-32768', 'gemma2-9b-it'] },
-            { id: 'nvidia', name: 'NVIDIA NIM', models: ['nvidia/llama-3.1-nemotron-70b-instruct', 'mistralai/mixtral-8x22b-instruct-v0.1', 'meta/llama-3.1-405b-instruct'] },
-            { id: 'anthropic', name: 'Anthropic', models: ['claude-sonnet-4-20250514', 'claude-3-5-sonnet-20241022', 'claude-3-5-haiku-20241022', 'claude-opus-4-20250514'] },
-            { id: 'google', name: 'Google Gemini', models: ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-pro', 'gemini-1.5-flash'] },
-            { id: 'deepseek', name: 'DeepSeek', models: ['deepseek-chat', 'deepseek-reasoner', 'deepseek-coder'] },
-            { id: 'mistral', name: 'Mistral AI', models: ['mistral-large-latest', 'mistral-small-latest', 'codestral-latest'] }
-        ];
+        // Theme definitions with preview colors
+        const THEME_DEFINITIONS = {
+            catppuccin: { name: 'Catppuccin Mocha', bg: '#1e1e2e', accent: '#cba6f7' },
+            terminal: { name: 'Classic Terminal', bg: '#0a0a0a', accent: '#33ff33' },
+            nord: { name: 'Nord', bg: '#2e3440', accent: '#88c0d0' },
+            dracula: { name: 'Dracula', bg: '#282a36', accent: '#bd93f9' },
+            'tokyo-night': { name: 'Tokyo Night', bg: '#1a1b26', accent: '#7aa2f7' },
+            gruvbox: { name: 'Gruvbox', bg: '#282828', accent: '#d79921' }
+        };
 
         let currentConfig = {};
         let selectedProvider = null;
+        let availableProviders = [];
+        let availableThemes = [];
+        let modelFetchTimeout = null;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadConfig();
+            await Promise.all([
+                loadConfig(),
+                loadThemes(),
+                loadProviders()
+            ]);
             setupTabs();
             setupEventListeners();
             renderProviderList();
+            updateConnectionStatus();
         });
 
-        // Load config from API
+        // ── API Calls ──
+
         async function loadConfig() {
             try {
                 const response = await fetch('/api/config');
                 currentConfig = await response.json();
                 updateGeneralSettings();
-            } catch (err) {
-                console.error('Failed to load config:', err);
-            }
-        }
-
-        // Save config to API
-        async function saveConfig() {
-            try {
-                const response = await fetch('/api/config', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(currentConfig)
-                });
-                
-                if (response.ok) {
-                    showToast('Settings saved successfully!');
-                } else {
-                    showToast('Failed to save settings', true);
+                if (currentConfig.ui && currentConfig.ui.theme) {
+                    applyTheme(currentConfig.ui.theme);
                 }
             } catch (err) {
-                console.error('Failed to save config:', err);
-                showToast('Failed to save settings', true);
+                console.error('Failed to load config:', err);
+                showToast('Failed to load configuration', true);
             }
         }
 
-        // Setup tabs
+        async function loadThemes() {
+            try {
+                const response = await fetch('/api/themes');
+                availableThemes = await response.json();
+                populateThemeSelect();
+                renderThemePreviews();
+            } catch (err) {
+                console.error('Failed to load themes:', err);
+            }
+        }
+
+        async function loadProviders() {
+            try {
+                const response = await fetch('/api/providers');
+                availableProviders = await response.json();
+                document.getElementById('providerCount').textContent = availableProviders.length;
+                renderProviderList();
+                populateDefaultProviderSelect();
+            } catch (err) {
+                console.error('Failed to load providers:', err);
+            }
+        }
+
+        async function fetchModelsFromAPI(baseUrl) {
+            const statusEl = document.getElementById('modelFetchStatus');
+            const indicatorEl = document.getElementById('modelFetchIndicator');
+            const listEl = document.getElementById('modelList');
+            
+            if (!baseUrl || baseUrl.trim() === '') {
+                statusEl.className = 'model-fetch-status';
+                statusEl.innerHTML = '';
+                // Fall back to hardcoded models
+                if (selectedProvider) {
+                    const provider = availableProviders.find(p => p.id === selectedProvider);
+                    if (provider) {
+                        renderModels(provider.models, currentConfig[selectedProvider]?.model || provider.models[0]);
+                    }
+                }
+                return;
+            }
+
+            statusEl.className = 'model-fetch-status loading';
+            statusEl.innerHTML = '<span class="spinner"></span> Fetching models...';
+            listEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 1rem; color: var(--text-overlay0);"><span class="spinner"></span> Loading models...</div>';
+
+            try {
+                const encodedUrl = encodeURIComponent(baseUrl.trim());
+                const response = await fetch(`/api/models?base_url=${encodedUrl}`);
+                const data = await response.json();
+
+                if (data.models && data.models.length > 0) {
+                    statusEl.className = 'model-fetch-status success';
+                    statusEl.innerHTML = `✓ ${data.models.length} models fetched`;
+                    renderModels(data.models, currentConfig[selectedProvider]?.model || data.models[0]);
+                } else {
+                    statusEl.className = 'model-fetch-status error';
+                    statusEl.innerHTML = `✗ ${data.error || 'No models found'}`;
+                    // Fall back to hardcoded models
+                    const provider = availableProviders.find(p => p.id === selectedProvider);
+                    if (provider) {
+                        renderModels(provider.models, currentConfig[selectedProvider]?.model || provider.models[0]);
+                    }
+                }
+            } catch (err) {
+                statusEl.className = 'model-fetch-status error';
+                statusEl.innerHTML = `✗ Connection failed: ${err.message}`;
+                // Fall back to hardcoded models
+                const provider = availableProviders.find(p => p.id === selectedProvider);
+                if (provider) {
+                    renderModels(provider.models, currentConfig[selectedProvider]?.model || provider.models[0]);
+                }
+            }
+        }
+
+        function debouncedFetchModels(baseUrl) {
+            clearTimeout(modelFetchTimeout);
+            modelFetchTimeout = setTimeout(() => fetchModelsFromAPI(baseUrl), 500);
+        }
+
+        // ── Theme Management ──
+
+        function applyTheme(themeId) {
+            // Remove all theme classes
+            Object.keys(THEME_DEFINITIONS).forEach(t => {
+                document.body.classList.remove(`theme-${t}`);
+            });
+            // Apply selected theme
+            document.body.classList.add(`theme-${themeId}` || 'theme-catppuccin');
+            
+            // Update theme display
+            const def = THEME_DEFINITIONS[themeId];
+            if (def) {
+                document.getElementById('currentThemeDisplay').textContent = def.name;
+            }
+
+            // Update theme preview highlights
+            document.querySelectorAll('.theme-option').forEach(el => {
+                el.classList.toggle('active', el.dataset.theme === themeId);
+            });
+            
+            // Update select
+            document.getElementById('theme').value = themeId;
+        }
+
+        function populateThemeSelect() {
+            const select = document.getElementById('theme');
+            select.innerHTML = availableThemes.map(t => `
+                <option value="${t.id}">${t.name}</option>
+            `).join('');
+            
+            select.addEventListener('change', (e) => {
+                const themeId = e.target.value;
+                applyTheme(themeId);
+                if (!currentConfig.ui) currentConfig.ui = {};
+                currentConfig.ui.theme = themeId;
+            });
+        }
+
+        function renderThemePreviews() {
+            const container = document.getElementById('themePreview');
+            container.innerHTML = availableThemes.map(t => {
+                const def = THEME_DEFINITIONS[t.id];
+                const currentTheme = currentConfig.ui?.theme || 'catppuccin';
+                return `
+                    <div class="theme-option ${t.id === currentTheme ? 'active' : ''}" data-theme="${t.id}">
+                        <div class="theme-swatch" style="background: linear-gradient(135deg, ${def?.bg || '#1e1e2e'}, ${def?.accent || '#cba6f7'});"></div>
+                        <div class="theme-name">${t.name}</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Add click handlers
+            container.querySelectorAll('.theme-option').forEach(el => {
+                el.addEventListener('click', () => {
+                    const themeId = el.dataset.theme;
+                    applyTheme(themeId);
+                    if (!currentConfig.ui) currentConfig.ui = {};
+                    currentConfig.ui.theme = themeId;
+                });
+            });
+        }
+
+        // ── UI Setup ──
+
+        function updateConnectionStatus() {
+            const statusEl = document.getElementById('connectionStatus');
+            statusEl.textContent = 'Connected';
+            document.querySelector('.status-dot').className = 'status-dot online';
+        }
+
         function setupTabs() {
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -644,16 +1189,27 @@
             });
         }
 
-        // Setup event listeners
         function setupEventListeners() {
             document.getElementById('saveBtn').addEventListener('click', saveConfig);
             document.getElementById('resetBtn').addEventListener('click', resetToDefaults);
             
             // Provider details inputs
             document.getElementById('apiKey').addEventListener('input', updateProviderConfig);
-            document.getElementById('baseUrl').addEventListener('input', updateProviderConfig);
             document.getElementById('temperature').addEventListener('input', updateProviderConfig);
             document.getElementById('maxTokens').addEventListener('input', updateProviderConfig);
+            
+            // Base URL - with debounced model fetch
+            document.getElementById('baseUrl').addEventListener('input', () => {
+                updateProviderConfig();
+                const baseUrl = document.getElementById('baseUrl').value;
+                debouncedFetchModels(baseUrl);
+            });
+
+            // Manual fetch button
+            document.getElementById('fetchModelsBtn').addEventListener('click', () => {
+                const baseUrl = document.getElementById('baseUrl').value;
+                fetchModelsFromAPI(baseUrl);
+            });
             
             // General settings
             document.getElementById('defaultProvider').addEventListener('change', (e) => {
@@ -663,25 +1219,19 @@
                 if (!currentConfig.ui) currentConfig.ui = {};
                 currentConfig.ui.scrollback_lines = parseInt(e.target.value) || 1000;
             });
-            document.getElementById('theme').addEventListener('change', (e) => {
-                if (!currentConfig.ui) currentConfig.ui = {};
-                currentConfig.ui.theme = e.target.value;
-            });
             
             // Developer mode
             document.getElementById('devMode').addEventListener('change', (e) => {
                 if (!currentConfig.ui) currentConfig.ui = {};
                 currentConfig.ui.developer_mode = e.target.checked;
             });
-            document.getElementById('showMetrics').addEventListener('change', (e) => {
-                // This could be stored in a separate config section
-            });
         }
 
-        // Render provider list
+        // ── Provider List ──
+
         function renderProviderList() {
             const list = document.getElementById('providerList');
-            list.innerHTML = PROVIDERS.map(provider => {
+            list.innerHTML = availableProviders.map(provider => {
                 const config = currentConfig[provider.id] || {};
                 const hasKey = config.api_key && config.api_key.length > 0;
                 
@@ -693,6 +1243,10 @@
                                 ${hasKey ? '✓ Configured' : '○ Not configured'}
                             </span>
                         </div>
+                        <div style="font-size: 0.8rem; color: var(--text-overlay0);">
+                            ${config.model || provider.models[0] || 'No model selected'}
+                            ${hasKey ? '| Key: ' + config.api_key.substring(0, 8) + '...' : ''}
+                        </div>
                     </div>
                 `;
             }).join('');
@@ -701,9 +1255,14 @@
             document.querySelectorAll('.provider-item').forEach(item => {
                 item.addEventListener('click', () => selectProvider(item.dataset.provider));
             });
+
+            // Re-select if one was selected
+            if (selectedProvider) {
+                const el = document.querySelector(`.provider-item[data-provider="${selectedProvider}"]`);
+                if (el) el.classList.add('selected');
+            }
         }
 
-        // Select provider
         function selectProvider(providerId) {
             selectedProvider = providerId;
             
@@ -716,7 +1275,9 @@
             const details = document.getElementById('providerDetails');
             details.style.display = 'block';
             
-            const provider = PROVIDERS.find(p => p.id === providerId);
+            const provider = availableProviders.find(p => p.id === providerId);
+            if (!provider) return;
+
             document.getElementById('detailsTitle').textContent = `🔌 ${provider.name} Configuration`;
             
             // Load provider config
@@ -726,13 +1287,27 @@
             document.getElementById('temperature').value = config.temperature ?? 0.7;
             document.getElementById('maxTokens').value = config.max_tokens ?? 4096;
             
-            // Render models
-            renderModels(provider.models, config.model);
+            // Clear model fetch status
+            document.getElementById('modelFetchStatus').className = 'model-fetch-status';
+            document.getElementById('modelFetchStatus').innerHTML = '';
+            
+            // Fetch models if base URL is set
+            const baseUrl = config.base_url || '';
+            if (baseUrl.trim()) {
+                fetchModelsFromAPI(baseUrl);
+            } else {
+                // Use hardcoded models
+                renderModels(provider.models, config.model || provider.models[0]);
+            }
         }
 
-        // Render models
         function renderModels(models, selectedModel) {
             const list = document.getElementById('modelList');
+            if (!models || models.length === 0) {
+                list.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 1rem; color: var(--text-overlay0);">No models available</div>';
+                return;
+            }
+            
             list.innerHTML = models.map(model => `
                 <div class="model-item ${model === selectedModel ? 'selected' : ''}" data-model="${model}">
                     ${model}
@@ -745,7 +1320,6 @@
             });
         }
 
-        // Select model
         function selectModel(model) {
             if (!selectedProvider) return;
             
@@ -759,7 +1333,6 @@
             });
         }
 
-        // Update provider config from inputs
         function updateProviderConfig() {
             if (!selectedProvider) return;
             
@@ -772,35 +1345,79 @@
             const temperature = parseFloat(document.getElementById('temperature').value);
             const maxTokens = parseInt(document.getElementById('maxTokens').value);
             
-            if (apiKey) currentConfig[selectedProvider].api_key = apiKey;
-            if (baseUrl) currentConfig[selectedProvider].base_url = baseUrl;
+            currentConfig[selectedProvider].api_key = apiKey || null;
+            currentConfig[selectedProvider].base_url = baseUrl || null;
             if (!isNaN(temperature)) currentConfig[selectedProvider].temperature = temperature;
             if (!isNaN(maxTokens)) currentConfig[selectedProvider].max_tokens = maxTokens;
             
             // Update provider list status
             renderProviderList();
             if (selectedProvider) {
-                document.querySelector(`.provider-item[data-provider="${selectedProvider}"]`)?.classList.add('selected');
+                const el = document.querySelector(`.provider-item[data-provider="${selectedProvider}"]`);
+                if (el) el.classList.add('selected');
             }
         }
 
-        // Update general settings
-        function updateGeneralSettings() {
+        function populateDefaultProviderSelect() {
             const select = document.getElementById('defaultProvider');
-            select.innerHTML = PROVIDERS.map(p => `
+            if (!select) return;
+            
+            select.innerHTML = availableProviders.map(p => `
                 <option value="${p.id}" ${currentConfig.default_provider === p.id ? 'selected' : ''}>
                     ${p.name}
                 </option>
             `).join('');
+        }
+
+        function updateGeneralSettings() {
+            populateDefaultProviderSelect();
             
             if (currentConfig.ui) {
                 document.getElementById('scrollbackLines').value = currentConfig.ui.scrollback_lines || 1000;
-                document.getElementById('theme').value = currentConfig.ui.theme || 'catppuccin';
                 document.getElementById('devMode').checked = currentConfig.ui.developer_mode || false;
+                
+                // Apply saved theme
+                if (currentConfig.ui.theme) {
+                    applyTheme(currentConfig.ui.theme);
+                }
             }
         }
 
-        // Reset to defaults
+        // ── Save / Reset ──
+
+        async function saveConfig() {
+            const saveBtn = document.getElementById('saveBtn');
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = '⏳ Saving...';
+            saveBtn.disabled = true;
+
+            try {
+                // Ensure provider configs are up to date
+                updateProviderConfig();
+
+                const response = await fetch('/api/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(currentConfig)
+                });
+                
+                if (response.ok) {
+                    showToast('Settings saved successfully!');
+                    // Re-load config to sync
+                    await loadConfig();
+                } else {
+                    const data = await response.json();
+                    showToast(data.error || 'Failed to save settings', true);
+                }
+            } catch (err) {
+                console.error('Failed to save config:', err);
+                showToast('Failed to save settings: ' + err.message, true);
+            } finally {
+                saveBtn.innerHTML = originalText;
+                saveBtn.disabled = false;
+            }
+        }
+
         function resetToDefaults() {
             if (confirm('Reset all settings to defaults?')) {
                 currentConfig = {
@@ -811,7 +1428,7 @@
                         scrollback_lines: 1000
                     }
                 };
-                PROVIDERS.forEach(p => {
+                availableProviders.forEach(p => {
                     currentConfig[p.id] = {
                         model: p.models[0],
                         temperature: 0.7,
@@ -821,21 +1438,25 @@
                 
                 updateGeneralSettings();
                 renderProviderList();
+                renderThemePreviews();
+                applyTheme('catppuccin');
                 if (selectedProvider) selectProvider(selectedProvider);
                 showToast('Settings reset to defaults');
             }
         }
 
-        // Show toast notification
+        // ── Toast ──
+
         function showToast(message, isError = false) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.className = 'toast' + (isError ? ' error' : '');
             toast.classList.add('show');
             
-            setTimeout(() => {
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
                 toast.classList.remove('show');
-            }, 3000);
+            }, 3500);
         }
     </script>
 </body>
